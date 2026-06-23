@@ -21,9 +21,19 @@ syntax match nbclFloat     /-\?\<\d\+\.\d\+\>/
 syntax match nbclInteger   /-\?\<\d\+\>/
 
 " Strings
-syntax match nbclEscape  /\\[ntr\\"'u]\|\\u[0-9a-fA-F]\{4}/ contained
+syntax match nbclEscape /\\[ntr\\"'u]\|\\u[0-9a-fA-F]\{4}/ contained
+syntax region nbclInterpolation start=/\${/ end=/}/ contained contains=TOP
 syntax region nbclString start=/"/ end=/"/ skip=/\\"/ contains=nbclEscape
 syntax region nbclString start=/'/ end=/'/ skip=/\\'/ contains=nbclEscape
+syntax region nbclFString start=/f"/ end=/"/ skip=/\\"/ contains=nbclEscape,nbclInterpolation
+syntax region nbclFString start=/f'/ end=/'/ skip=/\\'/ contains=nbclEscape,nbclInterpolation
+syntax region nbclRawString start=/r"/ end=/"/ skip=/\\"/
+syntax region nbclRawString start=/r'/ end=/'/ skip=/\\'/
+
+hi def link nbclString        String
+hi def link nbclFString       String
+hi def link nbclRawString     String
+hi def link nbclInterpolation PreProc
 
 " Operators
 syntax match nbclOperator /=>\|==\|!=\|<=\|>=\|\.\.\.\?=\?\|?\./ 
